@@ -4,7 +4,7 @@ For this exercise you had to create a simple program and then compile it. I deci
 I hadn't coded in a while or compiled for that matter so I used Google for help.
 
 Tools used for this task:
-*VScode
+* VScode
 
 ## Writing the code
 
