@@ -51,25 +51,32 @@
 * Firewall (UFW)
   * ```ufw default deny```
 
-(picture here)
+![My Cool Graph](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h1-graph.png)
+
+Here's a pic of Boxes and my VM in it:
+![Boxes and VM](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h1-vm.png)
 
 ## b) Tie It to the Standard
 
-Not sure if I fully grasped what the exercise was about but here's a table:
+Not sure if I fully grasped what the exercise was about but here's a table lol:
 
-|   Interested Party  | Need/Expectation/Requirement | ISO 27001 Requirement Area | Evidence/Demonstration |
+|   **Interested Party**  | **Need/Expectation/Requirement** | **ISO 27001 Requirement Area** | **Evidence/Demonstration** |
 |---------------------|------------------------------|-----------------------------|-----------------------|
-| Me (Owner and user) |    Continuity of exercises   |      Operation    | Snapshots and backups (if necessary) of exercises, documentation. |
-|   Course Organizer  |    Academic integrity,                           |     Leadership/Planning     |                        |
-|                     |                              |                             |                        |
-|                     |                              |                             |                        |
+| Me (Owner and user) | Continuity of exercises, data retention. | Planning (6.1, 6.2) & Operation (8.1) | Following best practises and following guidelines set by exercises. Snapshots and backups (if necessary) of exercises. Documentation of work. |
+| Service providers (GitHub, Moodle) | Compliance with terms, MFA, Account Security | Operation (8.1)| Multifactor authentication on, strong passwords. |
 
-
+Lil bit of evidence:
+![MFA on on Github](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h1-auth.png)
 
 
 ### Sources:
+
 https://terokarvinen.com/application-hacking/
+
 HH Moodle: Application Hacking and Vulnerabilities - ICI012AS3AE-3001
+
 https://en.wikipedia.org/wiki/ISO/IEC_27001
+
 ISO27001-2023-fi.pdf: SFS-EN ISO/IEC 27001:2023
+
 https://www.codecademy.com/resources/docs/markdown/tables
