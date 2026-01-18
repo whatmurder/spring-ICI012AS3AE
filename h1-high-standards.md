@@ -54,6 +54,7 @@
 ![My Cool Graph](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h1-graph.png)
 
 Here's a pic of Boxes and my VM in it:
+
 ![Boxes and VM](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h1-vm.png)
 
 ## b) Tie It to the Standard
@@ -66,6 +67,7 @@ Not sure if I fully grasped what the exercise was about but here's a table lol:
 | Service providers (GitHub, Moodle) | Compliance with terms, MFA, Account Security | Operation (8.1)| Multifactor authentication on, strong passwords. |
 
 Lil bit of evidence:
+
 ![MFA on on Github](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h1-auth.png)
 
 
