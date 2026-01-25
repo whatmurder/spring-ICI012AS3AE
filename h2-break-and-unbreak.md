@@ -403,9 +403,28 @@ Anyways that's solved now.
 
 ## e) Fix the 020-your-eyes-only vulnerability.
 
-Let's fix this thing:
+Let's fix this thing, like previously I'm using VSCodium for this.
+There's a lot more files in this one so I'll just go through the code to see if I can find anything interesting and/or useful.
 
+After going through the files one by one starting from the top I found the `/020-your-eyes-only/logtin/views.py` file which looks like this
 
+![h2-e-01](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-e-01.png)
+
+From what I gather and can deduct, these are the functions that determine who can access what. The account I created could access the `http://127.0.0.1:8000/accounts/my-data.html`. What I couldn't access was the Admin Dashboard. The AdminDashboardview has the arguements `self.request.user.is_authenticated and self.request.user.is_staff` while the MyDataView and AdminShowAllView only has the arguement `self.request.user.is_authenticated`. So using pure deduction I'm going to add `and self.request.user.is_staff` to the AdminShowAllView and see if that fixes it.
+
+![h2-e-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-e-02.png)
+
+I've now saved the `views.py` and replaces the old one with the new and improved one. Let's boot up the site hopefully for the final time.
+
+My old account still works, I've logged in:
+
+![h2-e-03](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-e-03.png)
+
+Now let's navigate to the admin-console:
+
+![h2-e-04](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-e-04.png)
+
+And I can't access it no more. Which means I've fixed the issue methinks. Thank heavens.
 
 ### Sources:
 
