@@ -280,7 +280,86 @@ I went through rest of the .git pages and they had the same flag, so safe to say
 
 ## d) Break into 020-your-eyes-only
 
-gyugyugyhuo
+### Part 1: Setting up
+
+First let's install the new prerequisites:
+
+```
+sudo apt-get -y install virtualenv
+virtualenv virtualenv/ -p python3 --system-site-packages
+```
+
+Then we activate the venv:
+
+```
+source virtualenv/bin/activate
+```
+
+!pic
+
+Venv is setup, now let's install django:
+
+```
+pip install -r requirements.txt
+```
+Django we installed was 4.2.27
+
+Then we navigate to the `logtin` directory and do some migration work:
+```
+./manage.py makemigrations; ./manage.py migrate
+```
+Output for that command:
+```
+No changes detected
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, sessions
+Running migrations:
+  No migrations to apply.
+
+```
+Now let's disconnect from the internet again and see if we can crack this thing.
+
+### Part 2: Accessing the Admin console somehow.
+
+We boot up the site using `./manage.py runserver` and when opening the link in browser we're greeted with this:
+
+![h2-d-01](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-d-01.png)
+
+Let's try to do something to this thing. There's four pages we can access:
+* `http://127.0.0.1:8000/accounts/login/?next=/my-data/` => shows a *Log In* view
+* `http://127.0.0.1:8000/accounts/login/?next=/admin-dashboard/` => Shows a *Log In* view
+* `http://127.0.0.1:8000/accounts/login/` => Shows a *Log In* view
+* `http://127.0.0.1:8000/accounts/register/` => Shows a *Register* view
+
+Let's start with registering to the site just for fun.
+
+I created my account and now let's log in.
+
+After logging in I can access the my data page, which now shows this: 
+
+![h2-d-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-d-02.png)
+
+Opening the Admin Dashboard gives a 403 Forbidden view.
+
+Let's try *ffuf* and see if we can find anything else:
+
+```
+ffuf -w common.txt -u http://127.0.0.1:8000/FUZZ
+```
+
+For some reason *ffuf* found just a single page: `admin-console`
+
+![h2-d-03](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-d-03.png)
+
+I tried running it couple more times to see if it was just an error but nope, there it was still. 
+
+So I navigated to `http://127.0.0.1:8000/admin-console` and boom:
+
+![h2-d-04](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-d-04.png)
+
+This felt somehow too easy, don't know if I lucked out or what happened there.
+
+Anyways that's solved now.
 
 ## e) Fix the 020-your-eyes-only vulnerability.
 
