@@ -217,6 +217,46 @@ I found a site from *geeksforgeeks* called (Input validation in Python)[https://
 Back to the drawing board.
 
 
+I decided to open the code outside of my VM so I can view it VSCodium instead of nano.
+
+After mulling over the code for a long while I decided to just google *prevent sql injection* and found a (cheat sheet)[https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html] by OWASP. In it they mention *Parameterized Queries*. After some googling and searching I managed to find a webpage from OpenStack called (Parameterize Database Queries)[https://security.openstack.org/guidelines/dg_parameterize-database-queries.html], in which they provide code examples ib how to do paramterized queries, and the first entry is about SQLAlchemy, the database library used in the exercise.
+
+Reading through the OpenStack page and trying to darndest to code I managed to fix it like so (only showing the changed parts):
+
+```
+[...]
+def hello():
+	if "pin" in request.form:
+		pin = str(request.form['pin'])
+	else:
+		pin = "0"
+
+	sql = "SELECT password FROM pins WHERE pin=':pin';"
+	row = ""
+	with app.app_context():
+		res=db.session.execute(text(sql),{"pin": pin})
+[...]
+```
+
+So what this does to my understanding the `:pin` is a placeholder, and and it takes the query as pure data, and not as SQL code. So the malicious query we did earlier `123 ' OR 1=1 LIMIT 1 OFFSET 2 --` gets ran as a literal string and not as a SQL query. The database doesn't find the value and that's that. NOw let's see it in action, I've dragged the `staff-only-v2.py` to my VM, let's run the badboy again:
+
+![h2-b-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-b-02.png)
+
+It opens this time, nice. Let's try the exploit: 
+
+![h2-b-03](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-b-03.png)
+
+The moment of truth:
+
+![h2-b-04](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-b-04.png)
+
+Beautiful! Now let's try our own pin code
+
+![h2-b-05](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h2-b-05.png)
+
+It works!
+
+
 ## c) Solve dirfuzt-1
 
 The idea for this exercise is to find a hidden dricetory in the provided sample file **dirfuzt-1**
@@ -363,7 +403,9 @@ Anyways that's solved now.
 
 ## e) Fix the 020-your-eyes-only vulnerability.
 
-aasaserdtciftgybuouj
+Let's fix this thing:
+
+
 
 ### Sources:
 
@@ -388,6 +430,8 @@ https://www.w3schools.com/sql/sql_datatypes.asp
 https://www.geeksforgeeks.org/python/input-validation-in-python/
 
 https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html
+
+https://security.openstack.org/guidelines/dg_parameterize-database-queries.html
 
 https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/
 
