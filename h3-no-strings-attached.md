@@ -28,7 +28,6 @@ Since we can't look at the `passtr.c` for clues, let's see if using `cat` gives 
 ```
 $ cat dog.txt
 $ woof
-
 ```
 
 So let's see what happens!
@@ -41,13 +40,51 @@ Let's try `sala-hakkeri-321` as the password:
 
 !pic
 
-Nice! The password wascorrect and we got the flag as well: `FLAG{Tero-d75ee66af0a68663f15539ec0f46e3b1}`.
+Nice! The password was correct and we got the flag as well: `FLAG{Tero-d75ee66af0a68663f15539ec0f46e3b1}`.
 Now let’s see if we can edit the program to make those harder to find.
 
 
+**Update just after pushing the first solution:**
+
+Yeah I can't read at all apparently, I was meant to use `strings` and not whatever I felt like using lol. Let's do it the proper way now.
+
+We'll run `strings passtr`:
+
+!pic
+
+Compared to the output from `cat` it seems like we got all the same info as before but without the compilement gibberish.
+
+Anyways we found the password and the flag from the lines 18 & 19. Now let's if we can make it so we can't find the password or the answer.
+
 ## b) passtr.c makeover
 
-sdfushfgosuf
+We'll move on to VSCodium outside of my VM so I can code a little easier, I've coded c using nano before and I'm not doing that again.
+
+Here's the source code:
+
+```
+// passtr - a simple static analysis warm up exercise
+// Copyright 2024 Tero Karvinen https://TeroKarvinen.com
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+	char password[20];
+	
+	printf("What's the password?\n");
+	scanf("%19s", password);
+	if (0 == strcmp(password, "sala-hakkeri-321")) {
+		printf("Yes! That's the password. FLAG{Tero-d75ee66af0a68663f15539ec0f46e3b1}\n");
+	} else {
+		printf("Sorry, no bonus.\n");
+	}
+	return 0;
+}
+```
+
+Simple and clean! Now let's do a simple internet search to see if we can find a way obfuscate the password and the flag.
+
 
 
 ## c) Packd
