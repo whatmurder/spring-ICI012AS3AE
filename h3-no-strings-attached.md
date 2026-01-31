@@ -441,6 +441,6 @@ https://terokarvinen.com/application-hacking/
 
 https://www.reddit.com/r/C_Programming/comments/gri58y/how_to_hide_characters_when_doing_strings_on_my/
 
-
+https://yurisk.info/2017/06/25/binary-obfuscation-string-obfuscating-in-C/
 
 https://upx.github.io/
