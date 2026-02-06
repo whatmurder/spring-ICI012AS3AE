@@ -4,8 +4,11 @@
 
 ### Hammond 2022: Ghidra for Reverse Engineering (PicoCTF 2022 #42 'bbbloat'):
 
-* djasndolasnd
-* asdmasipdjmpasid
+* In the video John Hammond walks through how to use *Ghidra* using `PicoCTF 2022 #42 'bbbloat'` binary as the example.
+* John introduces the commands `ltrace` and `strace` which can be used to trace library and system calls a program uses among other tools.
+  * `ltrace` is for library calls.
+  * `strace` is for system calls.
+* The video works as a nice walkthrough what *Ghidra* is, what it can do and how to reverse engineer programs.
 
 
 ## a) Install Ghidra
