@@ -60,8 +60,13 @@ Now we got *Ghidra* on the Debian 13 as well.
 
 ## b) rever-C
 
-gkdfngipdgdfig
+We'll start this one by downloading the `eszbin-challenges.zip` and unzipping it to a new folder. The files could be the same as the ones in the previous *h3* exercise and we can check that pretty easily by running `sha256sum` on them.
 
+Running `sha256sum` on both of the `packd` files before decompressing them with `upx -d` gives us the shasum of `547c98003b9db6852b00851b09435cb41c134db920bb4b18455bd5214b40e4a4` on both of the files.
+
+Since the files are the same and the `packd` is compressed, we'll decompress it first by running `upx -d packd`.
+
+AND NOW we can open up the program on *Ghidra*.
 
 ## c) If backwards
 
