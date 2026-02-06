@@ -66,4 +66,6 @@ https://www.youtube.com/watch?v=oTD_ki86c9I
 
 https://www.kali.org/
 
+https://github.com/NationalSecurityAgency/ghidra
+
 https://github.com/NoraCodes/crackmes
