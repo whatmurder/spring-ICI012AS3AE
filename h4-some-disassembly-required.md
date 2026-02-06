@@ -13,6 +13,8 @@
 
 ## a) Install Ghidra
 
+### 1. Kali
+
 I decided to install Kali Linux for this one since you can get a more modern *Ghidra* for this.
 
 I went to Kali.org and downloaded the VirtualBox .vdi file, imported it and then updated the system with
@@ -34,6 +36,26 @@ After the installation we got a License Agreement which we accept and boom:
 !pic 
 
 Ghidra installed!
+
+
+### 2. Debian
+
+Decided to install it on my Debian VM as well since the Kali VM was pretty wonky.
+
+To install *Ghidra* we need to install *Java JDK 21* as a dependency. To do that I ran these commands:
+
+```
+sudo apt update
+sudo apt install openjdk-21-jdk -y
+```
+
+After that I downloaded the latest release (`12.0.2` at the time of writing) and then unzipped it to the `/opt` directory.
+
+Then I navigated to the `/opt` folder, and ran the program by `./ghidraRun`.
+
+!pic
+
+Now we got *Ghidra* on the Debian 13 as well.
 
 
 ## b) rever-C
