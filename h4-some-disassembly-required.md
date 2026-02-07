@@ -215,7 +215,64 @@ undefined8 main(void)
 
 So next up is figuring out how one would do this. You can't just edit the code in the decompiler window at all so that's out of the question. Let's see what else I could do.
 
+Clicking around the disassebler highlights rows in the listing view. The way I'm reading this is how the assembly version of the program flows. In example if I highlight the `if (iVar1 == 0)` it highlights these rows in the listening view:
 
+!pic
+
+
+```
+001011a1 85 c0           TEST       ifMatch,ifMatch
+001011a3 75 11           JNZ        LAB_001011b6
+```
+
+The `001011a1` and `001011a3` are memory addresses, and the `TEST` and `JNZ` are instructions. I can deduce that the `TEST` instructions tests something (🤯), in our case the `ifMatch` variable. What `JNZ` and `LAB_001011b6` mean I got no clue. Let's do some research.
+
+I found a wiki page explaining what `JNZ` means:
+
+> #### Description
+> * The jnz (or jne) instruction is a conditional jump that follows a test.
+> * It jumps to the specified location if the Zero Flag (ZF) is cleared (0).
+> * jnz is commonly used to explicitly test for something not being equal to zero whereas jne is commonly found after a cmp instruction.
+
+There's also the `JZ` instruction:
+
+> #### Description
+> * The jz instruction is a conditional jump that follows a test.
+> * It jumps to the specified location if the Zero Flag (ZF) is set (1).
+> * jz is commonly used to explicitly test for something being equal to zero whereas je is commonly found after a cmp instruction.
+
+There's also an arrow in the listing view in the `JNZ` row that leads down to a part of the code that says 
+
+!pic
+
+```
+                             LAB_001011b6                                    XREF[1]:     001011a3(j)  
+        001011b6 48 8d 05        LEA        ifMatch,[s_Sorry,_no_bonus._0010207e]            = "Sorry, no bonus."
+                 c1 0e 00 00
+
+```
+
+Sooooo... Let's try switching `JNZ` to `JZ` and see what happens. To edit the `JNZ` I'll just right click it and select *Patch Instruction*.
+
+!pic
+
+!pic
+
+Nice. Let's save the file and export it:
+
+!pic
+
+and now let's move in to the directory where I saved it and run it.
+
+We run it and use *hello* as the password and see if that works:
+
+!pic
+
+That worked! Now let's use the actual password *sala-hakkeri-321*:
+
+!pic
+
+No bonus which means it worked and now we're done! 
 
 
 ## d) Nora CrackMe
@@ -274,5 +331,9 @@ https://www.kali.org/
 https://github.com/NationalSecurityAgency/ghidra
 
 https://www.w3schools.com/c/ref_string_strcmp.php
+
+https://www.aldeid.com/wiki/X86-assembly/Instructions/jnz
+
+https://www.aldeid.com/wiki/X86-assembly/Instructions/jz
 
 https://github.com/NoraCodes/crackmes
