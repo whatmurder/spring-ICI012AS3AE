@@ -35,7 +35,7 @@ After the installation we got a License Agreement which we accept and boom:
 
 !pic 
 
-Ghidra installed!
+*Ghidra* installed!
 
 
 ### 2. Debian
@@ -68,9 +68,87 @@ Since the files are the same and the `packd` is compressed, we'll decompress it 
 
 AND NOW we can open up the program on *Ghidra*.
 
-## c) If backwards
+I created a new project file and imported the `packd`, analyzed it and now let's get to it.
 
-whrtuwehrew
+The goal being finding the main function I don't know if I lucked out but it seems like the main function just popped up on the main compiler immediately.
+
+!pic
+
+this is what the main function looks like before any editing:
+
+```
+undefined8 main(void)
+
+{
+  int iVar1;
+  char local_28 [32];
+  
+  puts("What\'s the password?");
+  __isoc99_scanf(&DAT_0010201d,local_28);
+  iVar1 = strcmp(local_28,"piilos-AnAnAs");
+  if (iVar1 == 0) {
+    puts("Yes! That\'s the password. FLAG{Tero-0e3bed0a89d8851da933c64fefad4ff2}");
+  }
+  else {
+    puts("Sorry, no bonus.");
+  }
+  return 0;
+}
+```
+
+So what we can remember from the *h3* exercise this program asks for a password and then checks if it's correct.
+
+We have two variables in the program: `int iVar1;` and `char local_28 [32];`. There's a string compare (`strcmp`) that compares the user input to the real password. How the `strcmp` works is that if the strings match, it returns a *0*, and if not, it'll either return a positive or a negative number.
+
+So the basic flow of the program is this:
+
+1. Program initializes the variables.
+2. It prints out *"What's the password?"*
+3. The user types in a password guess.
+4. If the user input and the password match the value of `iVar1` becomes 0, the if statement becomes true and the program prints *"Yes! That's the password. FLAG{Tero-0e3bed0a89d8851da933c64fefad4ff2}"*
+5. If the user input and the password doesn't match, the program prints out *"Sorry, no bonus."*.
+
+So to rename the variables I'm thinking these would be logical:
+
+* `iVar1` => `ifMatch`
+* `local_28` => `userInput`
+
+This is what the program would look like:
+
+!pic
+
+Beautiful.
+
+I've recreated what the code for `packd` could look like down below if you want to check it out:
+
+<details>
+<summary>packd.c</summary>
+
+```
+#include <stdio.h>
+#include <string.h>
+
+int main(void) {
+  int ifMatch;
+  char userInput[32];
+  
+  printf("What's the password?\n");
+  scanf("%31s", userInput);
+  ifMatch = strcmp(userInput, "piilos-AnAnAs");
+  if (ifMatch == 0) {
+    printf("Yes! That's the password. FLAG{Tero-0e3bed0a89d8851da933c64fefad4ff2}\n");
+  }
+  else {
+    printf("Sorry, no bonus.\n");
+  }
+  return 0;
+}
+```
+
+</details>
+
+
+## c) If backwards
 
 
 ## d) Nora CrackMe
@@ -97,5 +175,7 @@ https://www.youtube.com/watch?v=oTD_ki86c9I
 https://www.kali.org/
 
 https://github.com/NationalSecurityAgency/ghidra
+
+https://www.w3schools.com/c/ref_string_strcmp.php
 
 https://github.com/NoraCodes/crackmes
