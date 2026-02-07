@@ -150,16 +150,113 @@ int main(void) {
 
 ## c) If backwards
 
+We start by creating a new project and importing the `passtr`. Just to be safe I'll make a copy of the original `passtr` by running this in the terminal:
+
+```
+cp passtr passtr-orig
+```
+
+Now we have a backup of the `passtr` and we're free to mess around with the binary.
+
+Now let's open up the `passtr` on *Ghidra*:
+
+!pic
+
+Here's the main function:
+
+```
+undefined8 main(void)
+
+{
+  int iVar1;
+  char local_28 [32];
+  
+  puts("What\'s the password?");
+  __isoc99_scanf(&DAT_0010201d,local_28);
+  iVar1 = strcmp(local_28,"sala-hakkeri-321");
+  if (iVar1 == 0) {
+    puts("Yes! That\'s the password. FLAG{Tero-d75ee66af0a68663f15539ec0f46e3b1}");
+  }
+  else {
+    puts("Sorry, no bonus.");
+  }
+  return 0;
+}
+```
+
+We can rename the variables like we did in the previous exercise:
+
+* `iVar1` => `ifMatch`
+* `local_28` => `userInput`
+
+So from my understanding the only change we'd have to do here is change this `if (iVar1 == 0)` to this ` if (iVar1 != 0)`.
+
+So what the code would look like is this:
+
+```
+undefined8 main(void)
+
+{
+  int ifMatch;
+  char userInput [32];
+  
+  puts("What\'s the password?");
+  __isoc99_scanf(&DAT_0010201d,local_28);
+  iVar1 = strcmp(local_28,"sala-hakkeri-321");
+  if (iVar1 != 0) {
+    puts("Yes! That\'s the password. FLAG{Tero-d75ee66af0a68663f15539ec0f46e3b1}");
+  }
+  else {
+    puts("Sorry, no bonus.");
+  }
+  return 0;
+}
+```
+
+So next up is figuring out how one would do this. You can't just edit the code in the decompiler window at all so that's out of the question. Let's see what else I could do.
+
+
+
 
 ## d) Nora CrackMe
 
-hdfhofsdhuiofsdhio
+We download the *CrackMe* by running
+
+```
+git clone https://github.com/NoraCodes/crackmes
+```
+
+Except I can't because I didn't have `git` installed so we run 
+
+```
+sudo apt-get install git
+```
+
+Now let's git clone it again and boom we did it
+
+!pic
+
+For the next set of exercises we have to compile the files `crackme01`, `crackme01e` and `crackme02`.
+
+According to the readme, to compile the files we need to run `make <name>` to compile the files:
+
+>To work with them, run `make <name>` where `<name>` is one of `crackme01`, `crackme02`, etc. Figure out how to make the crackme exit with the status code 0.
+
+Because I'm lazy I'll just run `make all` in the directory:
+
+!pic
+
+Boom. Now we can move on to cracking the programs.
 
 
 ## e) Nora crackme01
 
 iipjgjipfdgji
 
+
+## e) (again?) Nora crackme01e
+
+aaaaaaaaaaaaaaaaaaaaaaaaa
 
 ## f) Nora crackme02
 
