@@ -31,9 +31,13 @@ To install *Ghidra* on Kali you simply run
 sudo apt-get install ghidra
 ```
 
-After the installation we got a License Agreement which we accept and boom:
+After the installation we got a License Agreement which we accept
 
-!pic 
+![h4-a-01](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-a-01.png)
+
+and boom:
+
+![h4-a-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-a-02.png)
 
 *Ghidra* installed!
 
@@ -53,7 +57,7 @@ After that I downloaded the latest release (`12.0.2` at the time of writing) and
 
 Then I navigated to the `/opt` folder, and ran the program by `./ghidraRun`.
 
-!pic
+![h4-a-03](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-a-03.png)
 
 Now we got *Ghidra* on the Debian 13 as well.
 
@@ -72,7 +76,7 @@ I created a new project file and imported the `packd`, analyzed it and now let's
 
 The goal being finding the main function I don't know if I lucked out but it seems like the main function just popped up on the main compiler immediately.
 
-!pic
+![h4-b-01](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-b-01.png)
 
 this is what the main function looks like before any editing:
 
@@ -115,7 +119,7 @@ So to rename the variables I'm thinking these would be logical:
 
 This is what the program would look like:
 
-!pic
+![h4-b-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-b-02.png)
 
 Beautiful.
 
@@ -160,7 +164,7 @@ Now we have a backup of the `passtr` and we're free to mess around with the bina
 
 Now let's open up the `passtr` on *Ghidra*:
 
-!pic
+![h4-c-01](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-c-01.png)
 
 Here's the main function:
 
@@ -217,7 +221,7 @@ So next up is figuring out how one would do this. You can't just edit the code i
 
 Clicking around the disassebler highlights rows in the listing view. The way I'm reading this is how the assembly version of the program flows. In example if I highlight the `if (iVar1 == 0)` it highlights these rows in the listening view:
 
-!pic
+![h4-c-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-c-02.png)
 
 
 ```
@@ -243,7 +247,7 @@ There's also the `JZ` instruction:
 
 There's also an arrow in the listing view in the `JNZ` row that leads down to a part of the code that says 
 
-!pic
+![h4-c-03](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-c-03.png)
 
 ```
                              LAB_001011b6                                    XREF[1]:     001011a3(j)  
@@ -254,23 +258,23 @@ There's also an arrow in the listing view in the `JNZ` row that leads down to a 
 
 Sooooo... Let's try switching `JNZ` to `JZ` and see what happens. To edit the `JNZ` I'll just right click it and select *Patch Instruction*.
 
-!pic
+![h4-c-04](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-c-04.png)
 
-!pic
+![h4-c-05](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-c-05.png)
 
 Nice. Let's save the file and export it:
 
-!pic
+![h4-c-06](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-c-06.png)
 
 and now let's move in to the directory where I saved it and run it.
 
 We run it and use *hello* as the password and see if that works:
 
-!pic
+![h4-c-07](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-c-07.png)
 
 That worked! Now let's use the actual password *sala-hakkeri-321*:
 
-!pic
+![h4-c-08](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-c-08.png)
 
 No bonus which means it worked and now we're done! 
 
@@ -291,7 +295,7 @@ sudo apt-get install git
 
 Now let's git clone it again and boom we did it
 
-!pic
+![h4-d-01](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-d-01.png)
 
 For the next set of exercises we have to compile the files `crackme01`, `crackme01e` and `crackme02`.
 
@@ -301,7 +305,7 @@ According to the readme, to compile the files we need to run `make <name>` to co
 
 Because I'm lazy I'll just run `make all` in the directory:
 
-!pic
+![h4-d-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-d-02.png)
 
 Boom. Now we can move on to cracking the programs.
 
@@ -310,28 +314,28 @@ Boom. Now we can move on to cracking the programs.
 
 Let's create a new project called *NoraCrackMe* and import the compiled `crackme01.64`, `crackme01e.64` and `crackme02.64`.
 
-!pic
+![h4-e-01](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-e-01.png)
 
 Let's run the `crackme01.64` first to see what it does:
 
-!pic
+![h4-e-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-e-02.png)
 
 Ok so it prints out `Need exactly one argument.`. I guess it's getting too many arguements OR it needs an arguement.
 Let's start give it arguement while running it:
 
-!pic
+![h4-e-03](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-e-03.png)
 
 Ok, so *hello* wasn't the mystery word we're looking for.
 
 Now let's open the `crackme01.64` and see if we can find it.
 
-!pic
+![h4-e-04](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-e-04.png)
 
 Here's the main function, and it seems like the password might just be *password1* that's in the `strncmp` function.
 
 Let's try that:
 
-!pic
+![h4-e-05](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-e-05.png)
 
 Bang! Let's move on to the next one.
 
@@ -340,19 +344,19 @@ Bang! Let's move on to the next one.
 
 Let's run `crackme01e.64`:
 
-!pic
+![h4-e-06](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-e-06.png)
 
 Neither *hello* and *password1* were correct. Let's jump into Ghidra and see if we can find something.
 
-!pic
+![h4-e-07](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-e-07.png)
 
 Let's see if the logic from `crackme01.64` works here and see if *slm!paas.k* is the correct password:
 
-!pic
+![h4-e-08](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-e-08.png)
 
 It seems like it's trying to run a bash command or something like that. Let's try putting *''* around the password to make the arguement be entered as a string:
 
-!pic
+![h4-e-09](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-e-09.png)
 
 *slm!paas.k* was the password! Now to the final crackme!
 
@@ -361,7 +365,7 @@ It seems like it's trying to run a bash command or something like that. Let's tr
 
 First let's try running the program first before jumping into the binary:
 
-!pic
+![h4-f-01](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-f-01.png)
 
 Running it without an arguement and *hello* gives the familiar and expected responses. Let's open up Ghidra and see what's up.
 
@@ -403,7 +407,7 @@ undefined8 main(int param_1,long param_2)
 
 I am deeply intimidated by this piece of code. There's the *password1* in plaintext. Let's try that at first:
 
-!pic
+![h4-f-02](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-f-02.png)
 
 Didn't work, let's dive deeper I guess *sigh...*
 
@@ -430,11 +434,11 @@ if (cVar2 + -1 != (int)cVar1) {
 
 The first letter of the solution is *o*. We're one step closer to solving the puzzle. There's also the *password1* in the code. What we could do is reference the ASCII table and convert the *password1* using the -1 method we went through earlier. So *password1* would become *o`rrvnqc0*. Let's try that just for the hell of it:
 
-!pic
+![h4-f-03](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-f-03.png)
 
 There's some input thingmajig going on again so let's try the *''* trick from earlier:
 
-!pic
+![h4-f-04](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-f-04.png)
 
 Wow we did it. The solution was *o`rrvnqc0*. Now all that's left is to name the variables.
 
@@ -442,11 +446,11 @@ So what I'm thinking is this:
 * `cVar1` => `userInput`
 * `cVar2` => `expectedChar`
 * `uVar3` => `returnValue`. The return has to return a value, and in the code can see `uVar3 = 0` and `return uVar3;`. 
-* `lVar4` => `index`
+* `lVar4` => `index`. There's a conversion going on where the letters of the *password1* get changed using arrays `[]`. We also see that the value of `lVar4` gets shifted by 1 on the next line. That's why I think `index` would be a logical variable name.
 
 So what the revised main function with the renamed variables:
 
-!pic 
+![h4-f-05](https://github.com/whatmurder/spring-ICI012AS3AE/blob/main/img/h4-f-05.png) 
 
 
 ### Sources:
@@ -470,3 +474,5 @@ https://github.com/NoraCodes/crackmes
 https://www.hive.fi/
 
 https://www.asciitable.com/
+
+https://www.w3schools.com/c/c_arrays.php
