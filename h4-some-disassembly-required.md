@@ -308,16 +308,145 @@ Boom. Now we can move on to cracking the programs.
 
 ## e) Nora crackme01
 
-iipjgjipfdgji
+Let's create a new project called *NoraCrackMe* and import the compiled `crackme01.64`, `crackme01e.64` and `crackme02.64`.
+
+!pic
+
+Let's run the `crackme01.64` first to see what it does:
+
+!pic
+
+Ok so it prints out `Need exactly one argument.`. I guess it's getting too many arguements OR it needs an arguement.
+Let's start give it arguement while running it:
+
+!pic
+
+Ok, so *hello* wasn't the mystery word we're looking for.
+
+Now let's open the `crackme01.64` and see if we can find it.
+
+!pic
+
+Here's the main function, and it seems like the password might just be *password1* that's in the `strncmp` function.
+
+Let's try that:
+
+!pic
+
+Bang! Let's move on to the next one.
 
 
 ## e) (again?) Nora crackme01e
 
-aaaaaaaaaaaaaaaaaaaaaaaaa
+Let's run `crackme01e.64`:
+
+!pic
+
+Neither *hello* and *password1* were correct. Let's jump into Ghidra and see if we can find something.
+
+!pic
+
+Let's see if the logic from `crackme01.64` works here and see if *slm!paas.k* is the correct password:
+
+!pic
+
+It seems like it's trying to run a bash command or something like that. Let's try putting *''* around the password to make the arguement be entered as a string:
+
+!pic
+
+*slm!paas.k* was the password! Now to the final crackme!
+
 
 ## f) Nora crackme02
 
-jipjipfijjdfbi
+First let's try running the program first before jumping into the binary:
+
+!pic
+
+Running it without an arguement and *hello* gives the familiar and expected responses. Let's open up Ghidra and see what's up.
+
+Here's the main function:
+
+```
+undefined8 main(int param_1,long param_2)
+
+{
+  char cVar1;
+  char cVar2;
+  undefined8 uVar3;
+  long lVar4;
+  
+  if (param_1 == 2) {
+    cVar2 = 'p';
+    lVar4 = 0;
+    do {
+      cVar1 = *(char *)(*(long *)(param_2 + 8) + lVar4);
+      if (cVar1 == '\0') break;
+      if (cVar2 + -1 != (int)cVar1) {
+        printf("No, %s is not correct.\n");
+        return 1;
+      }
+      cVar2 = "password1"[lVar4 + 1];
+      lVar4 = lVar4 + 1;
+    } while (cVar2 != '\0');
+    printf("Yes, %s is correct!\n");
+    uVar3 = 0;
+  }
+  else {
+    puts("Need exactly one argument.");
+    uVar3 = 0xffffffff;
+  }
+  return uVar3;
+}
+
+```
+
+I am deeply intimidated by this piece of code. There's the *password1* in plaintext. Let's try that at first:
+
+!pic
+
+Didn't work, let's dive deeper I guess *sigh...*
+
+What I recognize on this code from learning `c` years ago is `'\0'`, which if I remember correctly is null. So following this logic `if (cVar1 == '\0') break;` means the password has to be something, so the solution has to contain characters.
+
+On top of the code in the line 10 we have the `if (param_1 == 2)`. Again, if I remember it correctly in `c` running the program counts as a parameter/arguement/whatever. So the solution for this program is a single word/parameter/arguement and not multiple words.
+
+So what we know so far is
+1. *password1* is not the password
+2. The solution can't be empty
+3. The solution is a single word.
+
+Looking at the code more is making me remember more and more of the `c` bootcamp/course/whatever I took in [Hive](https://www.hive.fi/) back in 2022 and the exercises we used to do there.
+
+One thing that was prevalent there were ASCII tables. And what I'm seeing here is something like that. Let's go through why I'm thinking this way. We got the `cVar2 = 'p';` on the line 11, and on the line 16 we got `if (cVar2 + -1 != (int)cVar1)`. So what this is doing is moving the letter *p* back one slot by checking the the value of *p*, which is 112. 
+So 112 + -1 = 111. If we cross reference this on [ASCII Table](https://www.asciitable.com/) we can see that 111 = *o*. 
+
+So what we can gather from this is that there's ASCII manipulation going on. Also what we find out from lines 16 and 17:
+
+```
+if (cVar2 + -1 != (int)cVar1) {
+   printf("No, %s is not correct.\n");
+```
+
+The first letter of the solution is *o*. We're one step closer to solving the puzzle. There's also the *password1* in the code. What we could do is reference the ASCII table and convert the *password1* using the -1 method we went through earlier. So *password1* would become *o`rrvnqc0*. Let's try that just for the hell of it:
+
+!pic
+
+There's some input thingmajig going on again so let's try the *''* trick from earlier:
+
+!pic
+
+Wow we did it. The solution was *o`rrvnqc0*. Now all that's left is to name the variables.
+
+So what I'm thinking is this:
+* `cVar1` => `userInput`
+* `cVar2` => `expectedChar`
+* `uVar3` => `returnValue`. The return has to return a value, and in the code can see `uVar3 = 0` and `return uVar3;`. 
+* `lVar4` => `index`
+
+So what the revised main function with the renamed variables:
+
+!pic 
 
 
 ### Sources:
@@ -337,3 +466,7 @@ https://www.aldeid.com/wiki/X86-assembly/Instructions/jnz
 https://www.aldeid.com/wiki/X86-assembly/Instructions/jz
 
 https://github.com/NoraCodes/crackmes
+
+https://www.hive.fi/
+
+https://www.asciitable.com/
